@@ -13,6 +13,15 @@ function VerifyOtpContent() {
   const [resendMessage, setResendMessage] = useState("");
   const [timer, setTimer] = useState(120); // 2 minutes
   const [timerActive, setTimerActive] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile viewport (width less than 640px)
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     let value = e.target.value;
@@ -60,6 +69,19 @@ function VerifyOtpContent() {
     } else if (e.key === "ArrowRight" && index < otp.length - 1) {
       e.preventDefault();
       document.getElementById(`otp-input-${index + 1}`)?.focus();
+    }
+  };
+
+  // For mobile: Single OTP input handler
+  const handleMobileOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    // Allow only up to 6 digits
+    if (/^\d{0,6}$/.test(value)) {
+      const digits = value.split("");
+      while (digits.length < 6) {
+        digits.push("");
+      }
+      setOtp(digits);
     }
   };
 
@@ -116,7 +138,7 @@ function VerifyOtpContent() {
   }, [timerActive, timer]);
 
   return (
-    <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center p-4 overflow-hidden relative">
       <div className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow" />
       <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed" />
       <div className="w-full max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10">
@@ -124,23 +146,40 @@ function VerifyOtpContent() {
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {resendMessage && <p className="text-green-500 text-center mb-4">{resendMessage}</p>}
         <form onSubmit={handleVerifyOtp} className="space-y-6">
-          <div className="flex justify-between space-x-2">
-            {otp.map((digit, index) => (
+          {isMobile ? (
+            <div>
+              <label htmlFor="otp-mobile" className="text-sm text-zinc-400 mb-1 block">
+                Enter OTP
+              </label>
               <input
-                key={index}
-                id={`otp-input-${index}`}
+                id="otp-mobile"
                 type="text"
-                value={digit}
-                onChange={(e) => handleOtpChange(e, index)}
-                onPaste={handleOtpPaste}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                onFocus={(e) => e.target.select()}
-                maxLength={1}
-                className="w-14 h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="-"
+                value={otp.join("")}
+                onChange={handleMobileOtpChange}
+                maxLength={6}
+                placeholder="Enter 6-digit OTP"
+                className="w-full h-12 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="flex justify-between space-x-2">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  id={`otp-input-${index}`}
+                  type="text"
+                  value={digit}
+                  onChange={(e) => handleOtpChange(e, index)}
+                  onPaste={handleOtpPaste}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  onFocus={(e) => e.target.select()}
+                  maxLength={1}
+                  className="w-14 h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="-"
+                />
+              ))}
+            </div>
+          )}
           {timerActive && (
             <p className="mt-4 text-center text-sm text-zinc-400">
               OTP expires in {Math.floor(timer / 60)}:

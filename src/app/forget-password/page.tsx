@@ -7,10 +7,20 @@ export default function ForgetPasswordPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
+  // Keep OTP as an array of 6 digits for consistency.
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // State to detect if device is mobile (viewport width < 640px)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +51,7 @@ export default function ForgetPasswordPage() {
     const res = await fetch("/api/auth/forget-password/verify", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // Join the otp array to form the OTP string
       body: JSON.stringify({ email, otp: otp.join(""), newPassword }),
     });
 
@@ -55,7 +66,7 @@ export default function ForgetPasswordPage() {
         data.error === "Too many attempts. Please request a new OTP."
       ) {
         setOtpSent(false);
-        setEmail(""); // Optional: clear email if you want them to start fresh
+        setEmail("");
         window.location.reload();
       }
       setError(data.error || "Invalid OTP or password reset failed.");
@@ -68,11 +79,10 @@ export default function ForgetPasswordPage() {
     }
   }, [error]);
 
-  // Handle OTP input change: Always overwrite the current value
+  // For non-mobile: Handle OTP input change for each separate input box
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     let value = e.target.value;
 
-    // If user types more than one digit (e.g. paste without triggering onPaste)
     if (value.length > 1) {
       if (/^\d+$/.test(value)) {
         const digits = value.split("").slice(0, 6);
@@ -91,7 +101,6 @@ export default function ForgetPasswordPage() {
       return;
     }
 
-    // Only accept a digit or empty string and overwrite current value
     if (value === "" || /^[0-9]$/.test(value)) {
       const newOtp = [...otp];
       newOtp[index] = value;
@@ -102,19 +111,18 @@ export default function ForgetPasswordPage() {
     }
   };
 
-  // Handle paste event: populate all OTP inputs if 6 digits are pasted
+  // For non-mobile: Handle paste event for multi-inputs
   const handleOtpPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pasteData = e.clipboardData.getData("Text").trim();
     if (/^\d{6}$/.test(pasteData)) {
       const pasteDigits = pasteData.split("");
       setOtp(pasteDigits);
-      // Focus the last input after pasting
       document.getElementById("otp-input-5")?.focus();
     }
   };
 
-  // Handle left/right arrow navigation
+  // For non-mobile: Arrow key navigation between OTP inputs
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
     if (e.key === "ArrowLeft" && index > 0) {
       e.preventDefault();
@@ -125,12 +133,27 @@ export default function ForgetPasswordPage() {
     }
   };
 
+  // For mobile: Handle OTP change in the single input field
+  const handleMobileOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    // Only allow up to 6 digits
+    if (/^\d{0,6}$/.test(value)) {
+      // Update the OTP state as an array (pad missing digits with empty strings)
+      const digits = value.split("");
+      while (digits.length < 6) {
+        digits.push("");
+      }
+      setOtp(digits);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center p-4 overflow-hidden relative">
+      {/* Background glow effects */}
       <div className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow" />
       <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed" />
 
-      <div className="w-full max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10">
+      <div className="w-full max-w-sm sm:max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10">
         <h1 className="text-2xl font-semibold text-white text-center mb-8">Forget Password</h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -157,31 +180,52 @@ export default function ForgetPasswordPage() {
               disabled={loading}
               className="w-full bg-gradient-to-r from-[#6366f1] to-[#f59e0b] text-white hover:to-[#f59e0b] relative overflow-hidden h-12"
             >
-              <span className="relative z-10">{loading ? "Sending OTP..." : "Request OTP"}</span>
+              <span className="relative z-10">
+                {loading ? "Sending OTP..." : "Request OTP"}
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1]/50 to-[#f59e0b]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             </Button>
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp} className="space-y-6">
-            <div className="flex justify-between space-x-2">
-              {otp.map((digit, index) => (
+            {isMobile ? (
+              // Single input for mobile devices
+              <div>
+                <label htmlFor="otp-mobile" className="text-sm text-zinc-400 mb-1 block">
+                  Enter OTP
+                </label>
                 <input
-                  key={index}
-                  id={`otp-input-${index}`}
+                  id="otp-mobile"
                   type="text"
-                  value={digit}
-                  onChange={(e) => handleOtpChange(e, index)}
-                  onPaste={handleOtpPaste}
-                  onKeyDown={(e) => handleKeyDown(e, index)}
-                  onFocus={(e) => e.target.select()}
-                  maxLength={1}
-                  className="w-14 h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="-"
+                  value={otp.join("")}
+                  onChange={handleMobileOtpChange}
+                  maxLength={6}
+                  placeholder="Enter 6-digit OTP"
+                  className="w-full h-12 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-              ))}
-            </div>
+              </div>
+            ) : (
+              // Multiple inputs for larger devices
+              <div className="flex justify-center flex-wrap gap-1 sm:gap-2">
+                {otp.map((digit, index) => (
+                  <input
+                    key={index}
+                    id={`otp-input-${index}`}
+                    type="text"
+                    value={digit}
+                    onChange={(e) => handleOtpChange(e, index)}
+                    onPaste={handleOtpPaste}
+                    onKeyDown={(e) => handleKeyDown(e, index)}
+                    onFocus={(e) => e.target.select()}
+                    maxLength={1}
+                    placeholder="-"
+                    className="min-w-[32px] w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 text-center text-white bg-[#2a2a2a] border border-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                ))}
+              </div>
+            )}
 
-            <div className="space-y-2">
+            <div className="space-y-2 mt-6">
               <label htmlFor="newPassword" className="text-sm text-zinc-400">
                 New Password
               </label>
@@ -199,9 +243,11 @@ export default function ForgetPasswordPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#6366f1] to-[#f59e0b] text-white hover:to-[#f59e0b] relative overflow-hidden h-12"
+              className="w-full bg-gradient-to-r from-[#6366f1] to-[#f59e0b] text-white hover:to-[#f59e0b] relative overflow-hidden h-12 mt-6"
             >
-              <span className="relative z-10">{loading ? "Verifying..." : "Reset Password"}</span>
+              <span className="relative z-10">
+                {loading ? "Verifying..." : "Reset Password"}
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#6366f1]/50 to-[#f59e0b]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
             </Button>
           </form>
