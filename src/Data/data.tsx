@@ -2218,7 +2218,7 @@ export const experienceLevel = [
     {company: "UKG", value: "Director" , code: "Director" },
     {company: "UKG", value: "Entry" , code: "Entry" },
     {company: "UKG", value: "Manager" , code: "Manager" },
-    {company: "UKG", value: "Mid-level" , code: "Mid-level" },
+    {company: "UKG", value: "Mid-level" , code: "Mid-Level" },
     {company: "UKG", value: "Senior" , code: "Senior" },
     {company: "UKG", value: "Vice President" , code: "Vice+President" },
     {company: "Mercedes", value: "(Junior) Salesperson" , code: "27" },
