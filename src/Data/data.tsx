@@ -10,6 +10,7 @@ export const companyList = [
     {value: 'Huawei', icon: '/Companies Logo/huawei.png'},
     {value: 'JP Morgan Chase', icon: '/Companies Logo/JPMC.png'},
     {value: 'Juniper Networks', icon: '/Companies Logo/Juniper Networks.png'},
+    {value: 'KPMG', icon: '/Companies Logo/KPMG.png'},
     {value: 'Meesho', icon: '/Companies Logo/meesho.png'},
     {value: 'Mercedes', icon: '/Companies Logo/mercedes.png'},
     {value: 'Microsoft', icon: '/Companies Logo/Microsoft.png'},
@@ -724,6 +725,9 @@ export const jobCategory = [
     {company: "Booking.com", value: "People" , code: "People" },
     {company: "Booking.com", value: "Security & Infrastructure" , code: "Security%20%26%20Infrastructure" },
     {company: "Booking.com", value: "Product" , code: "Product" },
+    {company: "KPMG", value: "KPMG Assurance and Consulting Services LLP" , code: "300000002507154" },
+    {company: "KPMG", value: "KPMG India Services LLP" , code: "300000002524425" },
+    {company: "KPMG", value: "KPMG Advisory Services Private Limited" , code: "300000002524123" },
 ];
 
 export const industryExp = [
@@ -2183,6 +2187,16 @@ export const location = [
     {company: "Booking.com", value: "Verona, Verona, Italy" , code: "Verona,Verona,Italy" },
     {company: "Booking.com", value: "Warsaw, Masovian, Poland" , code: "Warsaw,Masovian,Poland" },
     {company: "Booking.com", value: "Zagreb, Zagrebačka županija, Croatia" , code: "Zagreb,Zagreba%C4%8Dka%20%C5%BEupanija,Croatia" },
+    {company: "KPMG", value: "India" , code: "300000000296042" },
+    {company: "KPMG", value: "Karnataka, India" , code: "300002240942049" },
+    {company: "KPMG", value: "Bangalore, Karnataka, India" , code: "300002240961169" },
+    {company: "KPMG", value: "Maharashtra, India" , code: "300002240942061" },
+    {company: "KPMG", value: "Mumbai, Maharashtra, India" , code: "300002240956932" },
+    {company: "KPMG", value: "Haryana, India" , code: "300002240942046" },
+    {company: "KPMG", value: "Gurgaon, Haryana, India" , code: "300002240960137" },
+    {company: "KPMG", value: "Pune, Maharashtra, India" , code: "300002240957224" },
+    {company: "KPMG", value: "Telangana, India" , code: "300002240942056" },
+    {company: "KPMG", value: "Hyderabad, Telangana, India" , code: "300002240955238" },
 ];
 
 export const postingDate = [
@@ -2192,6 +2206,9 @@ export const postingDate = [
     {company: "Oracle", value: "Less than 7 days", code: "7"},
     {company: "Oracle", value: "Less than 30 days", code: "30"},
     {company: "Oracle", value: "Greater than 30 days", code: "31"},
+    {company: "KPMG", value: "Less than 7 days" , code: "7" },
+    {company: "KPMG", value: "Less than 30 days" , code: "30" },
+    {company: "KPMG", value: "Greater than 30 days" , code: "31" },
 ];
 
 export const experienceLevel = [

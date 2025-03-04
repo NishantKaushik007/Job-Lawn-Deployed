@@ -27,9 +27,6 @@ export async function POST(request: Request) {
       .update(rawBody)
       .digest('hex');
 
-    console.log('[Verification API] Received signature:', receivedSignature);
-    console.log('[Verification API] Computed signature:', computedSignature);
-
     // Check if the computed signature matches the received signature
     if (computedSignature !== receivedSignature) {
       console.error('[Verification API] Signature verification failed');

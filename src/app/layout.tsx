@@ -5,6 +5,7 @@ import ClientWrapper from "../components/ClientWrapper";
 import NavbarConditional from "@/components/NavbarConditional"; // Updated import
 import LogoutBarConditional from "@/components/LogoutBarConditional";
 import DisableKeysAndContext from "@/components/DisableKeysAndContext"
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
         <LogoutBarConditional />
         <DisableKeysAndContext />
         <ClientWrapper>{children}</ClientWrapper>
+        <Footer />
       </body>
     </html>
   );

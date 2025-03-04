@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -11,24 +11,25 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    // { name: 'Home', path: '/' },
-    // { name: 'Jobs', path: '/dashboard' },
-    // { name: 'Support', path: '/support' },
+    // { name: 'Privacy Policy', path: '/privacy-policy' },
+    // { name: 'Term and Conditions', path: '/term-and-conditions' },
+    // { name: 'Shipping Policy', path: '/shipping-policy' },
+    // { name: 'Cancellation and Refund', path: '/cancellation-and-refund' },
     // { name: 'Pricing', path: '/pricing' },
-    // { name: 'About Us', path: '/aboutUs' },
-    // { name: 'Contact Us', path: '/contactUs' },
+    { name: 'About Us', path: '/about-us' },
+    { name: 'Contact Us', path: '/contact-us' },
   ];
 
   return (
     <nav className="bg-[#1c1c1c]">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo and Nav Links in the same container */}
+          {/* Logo and Desktop Nav Links */}
           <div className="flex items-center space-x-6">
             <Link href="/" className="flex-shrink-0 cursor-pointer">
               <Image src="/logo.svg" alt="Logo" width={62} height={15} />
             </Link>
-            {/* <ul className="hidden md:flex space-x-6">
+            <ul className="hidden md:flex space-x-6">
               {navLinks.map((link) => (
                 <li key={link.name} className="relative group">
                   <Link
@@ -40,7 +41,7 @@ const Navbar = () => {
                   <div className="absolute rounded-lg bottom-0 w-full h-1 bg-gradient-to-r from-[#00b5ad] via-[#1e40af] to-[#6b21a8] hidden group-hover:block transition-all duration-200"></div>
                 </li>
               ))}
-            </ul> */}
+            </ul>
           </div>
 
           {/* Desktop Right Section */}
@@ -74,8 +75,8 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-2 pt-2 pb-3 space-y-1">
-          {/* {navLinks.map((link) => (
+        <div className="md:hidden px-2 pt-2 pb-3 space-y-2 text-center">
+          {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.path}
@@ -84,8 +85,8 @@ const Navbar = () => {
             >
               {link.name}
             </Link>
-          ))} */}
-          <div className="mt-3 space-y-1">
+          ))}
+          <div className="mt-3 space-y-2">
             <button
               onClick={() => {
                 setIsOpen(false);

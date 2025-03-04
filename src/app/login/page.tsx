@@ -36,7 +36,7 @@ export default function LoginPage() {
       }
 
       if (res.status === 403 && data.error.includes("Subscription expired")) {
-        router.push("https://rzp.io/rzp/joblawn");
+        router.push("https://rzp.io/rzp/joblawn-payment-page");
         return;
       }
 
