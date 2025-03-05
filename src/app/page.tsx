@@ -56,8 +56,9 @@ function CosmosAnimation() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
+    // Set particle count based on viewport width: half particles for mobile devices.
+    const numParticles = window.innerWidth < 768 ? 50 : 100;
     const particles: Particle[] = [];
-    const numParticles = 100;
 
     for (let i = 0; i < numParticles; i++) {
       particles.push(
