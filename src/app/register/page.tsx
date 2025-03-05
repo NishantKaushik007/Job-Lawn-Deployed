@@ -38,16 +38,14 @@ export default function RegisterPage() {
   };
 
   return (
-    // Outer container: min-h-screen & overflow-auto prevents extra scrolling if card is small.
-    <div className="relative min-h-screen w-screen bg-[#1c1c1c] overflow-auto">
-      {/* Glow effects as fixed elements (do not affect layout) */}
-      <div className="fixed top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow pointer-events-none" />
-      <div className="fixed -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed pointer-events-none" />
+    <div className="relative min-h-screen w-screen bg-[#0A0118] overflow-auto">
+      {/* Gradient orbs with pulse animation */}
+      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
       {/* Centering container */}
       <div className="relative z-10 flex flex-col items-center justify-center py-8 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800">
-
           {/* Logo */}
           <div className="w-16 h-16 mb-8 mx-auto">
             <Link href="/">

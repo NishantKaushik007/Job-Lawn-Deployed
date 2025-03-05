@@ -3,16 +3,19 @@ import { TypingAnimation } from "@/components/magicui/typing-animation";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#1c1c1c] overflow-hidden">
-      {/* Decorative Blurs */}
-      <div className="fixed top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow pointer-events-none" />
-      <div className="fixed -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed pointer-events-none" />
+    <div className="min-h-screen w-full bg-[#0A0118] relative overflow-hidden">
+      {/* Gradient orbs with pulse animation */}
+      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
       {/* Overlay Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-      <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
-        Welcome to <TypingAnimation as="span" className="text-4xl md:text-6xl font-bold drop-shadow-lg">Job Lawn</TypingAnimation>
-      </h1>
+        <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+          Welcome to{" "}
+          <TypingAnimation as="span" className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+            Job Lawn
+          </TypingAnimation>
+        </h1>
         <p className="mt-4 text-lg md:text-2xl drop-shadow-md">
           Discover the best job opportunities at top companies.
         </p>

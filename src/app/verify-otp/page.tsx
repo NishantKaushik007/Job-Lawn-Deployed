@@ -138,9 +138,11 @@ function VerifyOtpContent() {
   }, [timerActive, timer]);
 
   return (
-    <div className="min-h-screen bg-[#1c1c1c] flex items-center justify-center p-4 overflow-hidden relative">
-      <div className="absolute top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow" />
-      <div className="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed" />
+    <div className="min-h-screen bg-[#0A0118] flex items-center justify-center p-4 overflow-hidden relative">
+      {/* Gradient orbs with pulse animation */}
+      <div className="fixed top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
+      <div className="fixed bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none"></div>
+
       <div className="w-full max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10">
         <h1 className="text-2xl font-semibold text-white text-center mb-8">Verify OTP</h1>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

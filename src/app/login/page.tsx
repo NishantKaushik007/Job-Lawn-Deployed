@@ -53,13 +53,11 @@ export default function LoginPage() {
   };
 
   return (
-    // Outer container with reduced vertical padding: py-4 instead of py-8.
-    <div className="relative min-h-screen w-screen bg-[#0a0a0a] overflow-auto">
-      {/* Fixed glow effects */}
-      <div className="fixed top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow pointer-events-none" />
-      <div className="fixed -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed pointer-events-none" />
+    <div className="relative min-h-screen w-screen bg-[#0A0118] overflow-hidden">
+      {/* Gradient orbs with pulse animation */}
+      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
-      {/* Centering container with less vertical padding */}
       <div className="relative z-10 flex flex-col items-center justify-center py-4 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#1c1c1c]/50 rounded-2xl backdrop-blur-xl border border-zinc-800">
           {/* Logo */}

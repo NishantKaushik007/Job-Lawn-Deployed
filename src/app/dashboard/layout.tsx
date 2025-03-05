@@ -74,9 +74,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }, [handleLogout, router]);
 
   return (
-    <div className="relative min-h-screen bg-[#1c1c1c] overflow-auto">
-      <div className="fixed top-1/4 -right-1/4 w-[600px] h-[600px] bg-[#6366f1]/20 rounded-full blur-[128px] animate-glow pointer-events-none" />
-      <div className="fixed -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-[#f59e0b]/20 rounded-full blur-[128px] animate-glow-delayed pointer-events-none" />
+    <div className="relative min-h-screen bg-[#0A0118] overflow-hidden">
+      {/* Gradient orbs with pulse animation */}
+      <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
+      <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none"></div>
+      
       {/* You can add your dashboard's header, sidebar, etc. here */}
       {children}
     </div>
