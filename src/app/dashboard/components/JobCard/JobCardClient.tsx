@@ -152,7 +152,7 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
         </button>
       </div>
       {isDetailsVisible && (
-        <div className="mt-2 border-t pt-2 backdrop-blur-lg bg-opacity-30 text-black">
+        <div className="mt-2 border-t pt-2 backdrop-blur-lg bg-opacity-30 text-zinc-400">
           <h4 className="font-semibold">Description:</h4>
           <div dangerouslySetInnerHTML={{ __html: job.description || '' }} />
           <h4 className="font-semibold">Basic Qualifications:</h4>
