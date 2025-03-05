@@ -201,10 +201,10 @@ export default function LoginPage() {
 
           {/* Footer */}
           <footer className="p-4 flex justify-center gap-6 mt-6">
-            <Link href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors">
+            <Link href="/term-and-conditions" className="text-sm text-zinc-400 hover:text-white transition-colors">
               Terms of Use
             </Link>
-            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-white transition-colors">
+            <Link href="/privacy-policy" className="text-sm text-zinc-400 hover:text-white transition-colors">
               Privacy policy
             </Link>
           </footer>

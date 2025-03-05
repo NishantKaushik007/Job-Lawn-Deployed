@@ -209,10 +209,10 @@ export default function RegisterPage() {
           </form>
           {/* Footer */}
           <footer className="pt-6 flex justify-center gap-6 mt-2">
-            <Link href="/terms" className="text-sm text-zinc-400 hover:text-white transition-colors">
+            <Link href="/term-and-conditions" className="text-sm text-zinc-400 hover:text-white transition-colors">
               Terms of Use
             </Link>
-            <Link href="/privacy" className="text-sm text-zinc-400 hover:text-white transition-colors">
+            <Link href="/privacy-policy" className="text-sm text-zinc-400 hover:text-white transition-colors">
               Privacy policy
             </Link>
           </footer>
