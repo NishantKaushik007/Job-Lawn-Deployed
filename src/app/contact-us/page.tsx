@@ -50,9 +50,9 @@ const CosmosAnimation: React.FC = () => {
       }
     }
 
+    // Set particle count based on viewport width: half particles for mobile devices.
+    const numParticles = window.innerWidth < 768 ? 50 : 100;
     const particles: Particle[] = [];
-    const numParticles = 100;
-
     for (let i = 0; i < numParticles; i++) {
       particles.push(
         new Particle(
@@ -206,7 +206,7 @@ const ContactUs: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="hidden md:block px-6 py-3 rounded-md text-zinc-300 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 transition"
+              className="px-6 py-3 rounded-md text-zinc-300 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 transition"
             >
               Send message
             </button>
