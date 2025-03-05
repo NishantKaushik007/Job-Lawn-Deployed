@@ -47,7 +47,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             <button
               onClick={() => router.push("/login")}
-              className="text-white bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-base px-5 py-2.5"
+              className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-base px-5 py-2.5"
             >
               Log in
             </button>
@@ -91,7 +91,7 @@ const Navbar = () => {
                 setIsOpen(false);
                 router.push("/login");
               }}
-              className="block w-full text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-base px-3 py-2 text-center"
+              className="block w-full text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-base px-3 py-2 text-center"
             >
               Log in
             </button>
