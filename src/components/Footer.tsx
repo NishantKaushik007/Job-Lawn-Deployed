@@ -13,9 +13,9 @@ const Footer: React.FC = () => {
     '/about-us',
     '/pricing',
     '/cancellation-and-refund',
-    'privacy-policy',
-    'shipping-policy',
-    'term-and-conditions'
+    '/privacy-policy',
+    '/shipping-policy',
+    '/term-and-conditions'
   ];
   
   if (!allowedPaths.includes(pathname)) {
