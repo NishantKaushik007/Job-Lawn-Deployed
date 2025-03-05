@@ -1,28 +1,27 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    // { name: 'Privacy Policy', path: '/privacy-policy' },
-    // { name: 'Term and Conditions', path: '/term-and-conditions' },
-    // { name: 'Shipping Policy', path: '/shipping-policy' },
-    // { name: 'Cancellation and Refund', path: '/cancellation-and-refund' },
-    // { name: 'Pricing', path: '/pricing' },
-    { name: 'About Us', path: '/about-us' },
-    { name: 'Contact Us', path: '/contact-us' },
+    { name: "About Us", path: "/about-us" },
+    { name: "Contact Us", path: "/contact-us" },
   ];
 
   return (
-    <nav className="bg-[#1c1c1c]">
-      <div className="max-w-6xl mx-auto px-4">
+    <nav className="relative bg-[#0A0118] overflow-hidden">
+      {/* Animated orb background */}
+      <div className="fixed top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
+      <div className="fixed -bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none"></div>
+
+      <div className="relative z-10 max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Desktop Nav Links */}
           <div className="flex items-center space-x-6">
@@ -47,13 +46,13 @@ const Navbar = () => {
           {/* Desktop Right Section */}
           <div className="hidden md:flex items-center space-x-4">
             <button
-              onClick={() => router.push('/login')}
+              onClick={() => router.push("/login")}
               className="text-white bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-base px-5 py-2.5"
             >
               Log in
             </button>
             <button
-              onClick={() => router.push('/register')}
+              onClick={() => router.push("/register")}
               className="text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-1 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-base px-5 py-2.5"
             >
               Sign Up
@@ -75,7 +74,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden px-2 pt-2 pb-3 space-y-2 text-center">
+        <div className="relative z-10 md:hidden px-2 pt-2 pb-3 space-y-2 text-center">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -90,7 +89,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 setIsOpen(false);
-                router.push('/login');
+                router.push("/login");
               }}
               className="block w-full text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-base px-3 py-2 text-center"
             >
@@ -99,7 +98,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 setIsOpen(false);
-                router.push('/register');
+                router.push("/register");
               }}
               className="block w-full text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-2 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-base px-3 py-2 text-center"
             >
