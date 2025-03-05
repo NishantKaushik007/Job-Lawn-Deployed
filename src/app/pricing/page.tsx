@@ -54,8 +54,9 @@ const CosmosAnimation: React.FC = () => {
       }
     }
 
+    // Set particle count based on viewport width: half particles for mobile devices.
+    const numParticles = window.innerWidth < 768 ? 50 : 100;
     const particles: Particle[] = [];
-    const numParticles = 100;
     for (let i = 0; i < numParticles; i++) {
       particles.push(
         new Particle(
@@ -156,7 +157,13 @@ export default function PremiumCard() {
             Enjoy unlimited access to tailored job openings and career opportunities with our subscription service.
           </p>
           <ul className="space-y-3 mb-8">
-            {["Pay After Using 30 Days", "Access To Newly Added Companies", "Unlimited Job Searching", "Customized Filters", "24/7 Availability"].map((feature, index) => (
+            {[
+              "Pay After Using 30 Days",
+              "Access To Newly Added Companies",
+              "Unlimited Job Searching",
+              "Customized Filters",
+              "24/7 Availability",
+            ].map((feature, index) => (
               <li key={index} className="flex items-center gap-2">
                 <div className="flex-shrink-0 w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
                   <Check className="h-3 w-3 text-violet-500" />
@@ -165,7 +172,10 @@ export default function PremiumCard() {
               </li>
             ))}
           </ul>
-          <Button onClick={() => (window.location.href = "/register")} className="w-full bg-violet-500 hover:bg-violet-600 text-black font-medium rounded-xl py-6">
+          <Button
+            onClick={() => (window.location.href = "/register")}
+            className="w-full bg-violet-500 hover:bg-violet-600 text-black font-medium rounded-xl py-6"
+          >
             Register Now!
           </Button>
         </div>
