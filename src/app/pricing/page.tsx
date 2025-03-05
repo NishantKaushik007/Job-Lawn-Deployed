@@ -12,7 +12,7 @@ export default function PremiumCard() {
       <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
-      <div className="relative min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="relative min-h-screen flex flex-col items-center justify-center p-4 select-none">
         <div className="relative w-full max-w-sm rounded-3xl bg-black border border-violet-500/30 p-6 overflow-hidden animate-fade-in">
           <div className="absolute -top-24 -left-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-violet-500/20 rounded-full blur-3xl"></div>

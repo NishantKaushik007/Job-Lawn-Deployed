@@ -98,7 +98,7 @@ const Footer: React.FC = () => {
       {/* Desktop version: absolute positioning */}
       <div className="hidden md:block fixed bottom-0 left-0 w-full h-24">
         {/* Navigation Links (centered) */}
-        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex space-x-8">
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 flex space-x-8 select-none">
           <Link href="/privacy-policy" className="hover:text-gray-400">
             Privacy Policy
           </Link>

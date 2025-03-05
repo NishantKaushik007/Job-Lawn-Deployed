@@ -42,7 +42,7 @@ const ContactUs: React.FC = () => {
 
       <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md relative z-10">
         {/* Transparent, blurred card */}
-        <div className="bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 p-8">
+        <div className="bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 p-8 select-none">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-zinc-300">
             Contact Us
           </h2>

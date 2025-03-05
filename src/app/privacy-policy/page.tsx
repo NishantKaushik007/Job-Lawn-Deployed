@@ -14,7 +14,7 @@ const PrivacyPolicy: React.FC = () => {
       <div className="fixed bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none"></div>
 
       {/* Content Card */}
-      <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md relative z-10">
+      <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md relative z-10 select-none">
         <div className="bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 p-8">
           <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
           <ol className="list-decimal ml-6 space-y-6 marker:text-xl">

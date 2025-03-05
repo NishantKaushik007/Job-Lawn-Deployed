@@ -157,7 +157,7 @@ export default function ForgetPasswordPage() {
       <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
-      <div className="w-full max-w-sm sm:max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10">
+      <div className="w-full max-w-sm sm:max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10 select-none">
         <h1 className="text-2xl font-semibold text-white text-center mb-8">Forget Password</h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

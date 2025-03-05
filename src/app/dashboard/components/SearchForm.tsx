@@ -48,7 +48,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ initialKeyword }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center space-x-2 w-full">
+    <form onSubmit={handleSubmit} className="flex items-center space-x-2 w-full select-none">
       <input
         type="text"
         name="keyword"

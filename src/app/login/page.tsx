@@ -63,7 +63,7 @@ export default function LoginPage() {
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
       <div className="relative z-10 flex flex-col items-center justify-center py-4 px-4">
-        <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#1c1c1c]/50 rounded-2xl backdrop-blur-xl border border-zinc-800">
+        <div className="w-full max-w-md p-6 sm:p-8 md:p-10 bg-[#1c1c1c]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 select-none">
           {/* Logo */}
           <div className="w-16 h-16 mb-8 mx-auto">
             <Link href="/">

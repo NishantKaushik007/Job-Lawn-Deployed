@@ -116,7 +116,7 @@ const SelectedCompany = () => {
     }));
 
     return (
-        <div className="p-4 bg-[#1c1c1c] text-white">
+        <div className="p-4 bg-[#1c1c1c] text-white select-none">
             <label className="block">
                 Select Company:
                 <Select

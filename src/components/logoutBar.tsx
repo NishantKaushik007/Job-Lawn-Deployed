@@ -94,7 +94,7 @@ const LogoutBar = () => {
 
   return (
     <nav className="bg-[#1c1c1c]">
-      <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4 py-2">
+      <div className="relative max-w-[1080px] mx-auto flex items-center justify-between px-4 py-2 select-none">
         {/* Logo */}
         <Link href="/" className="cursor-pointer">
           <Image src="/logo.svg" alt="Logo" width={62} height={15} />
