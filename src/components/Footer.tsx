@@ -5,7 +5,25 @@ import { usePathname } from 'next/navigation';
 
 const Footer: React.FC = () => {
   const pathname = usePathname();
-  if (pathname !== '/') return null;
+
+  const allowedPaths = [
+    '/',
+    '/dashboard',
+    '/contact-us',
+    '/about-us',
+    '/pricing',
+    '/cancellation-and-refund',
+    'privacy-policy',
+    'shipping-policy',
+    'term-and-conditions'
+  ];
+  
+  if (!allowedPaths.includes(pathname)) {
+    return null;
+  }
+
+  
+  // if (pathname !== '/') return null;
 
   return (
     <footer className="w-full bg-gray-800 text-white z-50">
