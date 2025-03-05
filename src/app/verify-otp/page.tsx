@@ -2,6 +2,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CosmosAnimation } from "@/components/CosmosAnimation";
 
 function VerifyOtpContent() {
   const router = useRouter();
@@ -139,6 +140,9 @@ function VerifyOtpContent() {
 
   return (
     <div className="min-h-screen bg-[#0A0118] flex items-center justify-center p-4 overflow-hidden relative">
+      {/* Cosmos animation background */}
+      <CosmosAnimation />
+
       {/* Gradient orbs with pulse animation */}
       <div className="fixed top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
       <div className="fixed bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000 pointer-events-none"></div>

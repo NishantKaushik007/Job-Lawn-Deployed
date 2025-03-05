@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CosmosAnimation } from "@/components/CosmosAnimation";
 
 export default function ForgetPasswordPage() {
   const router = useRouter();
@@ -149,6 +150,9 @@ export default function ForgetPasswordPage() {
 
   return (
     <div className="min-h-screen bg-[#0A0118] flex items-center justify-center p-4 overflow-hidden relative">
+      {/* Cosmos animation background */}
+      <CosmosAnimation />
+      
       {/* Gradient orbs with pulse animation */}
       <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse"></div>
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
