@@ -1,5 +1,4 @@
 User-agent: *
-User-agent: AdsBot-Google
 Disallow: /dashboard
 Disallow: /dashboard/
 Disallow: /forget-password
@@ -16,3 +15,6 @@ Allow: /pricing
 Allow: /privacy-policy
 Allow: /shipping-policy
 Allow: /term-and-conditions
+
+User-agent: AdsBot-Google
+Disallow: /
