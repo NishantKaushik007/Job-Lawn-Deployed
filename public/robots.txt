@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /forget-password
+Disallow: /verify-otp
+Disallow: /forget-password/
+Disallow: /verify-otp/
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /about-us
+Allow: /cancellation-and-refund
+Allow: /contact-us
+Allow: /pricing
+Allow: /privacy-policy
+Allow: /shipping-policy
+Allow: /term-and-conditions
