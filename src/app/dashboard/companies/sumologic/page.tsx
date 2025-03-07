@@ -1,5 +1,6 @@
 import React from 'react';
 import DropdownFilter from './DropdownFilter';
+import SearchForm from '../../components/SearchForm';
 
 // In-memory cache for job categories and countries
 const cache = {
@@ -144,15 +145,15 @@ async function fetchCountryJobs(countryCode: string) {
   return jobs;
 }
 
-// Main page component that fetches jobs based on searchParams (jobCategoryCode, countryCode)
+// Main page component that fetches jobs based on searchParams (jobCategoryCode, countryCode, keyword)
 export default async function Page({
   searchParams: rawSearchParams,
 }: {
-  searchParams: Promise<{ jobCategoryCode?: string; countryCode?: string }>;
+  searchParams: Promise<{ jobCategoryCode?: string; countryCode?: string; keyword?: string }>;
 }) {
   // Await the promise to get the actual search parameters
   const searchParams = await rawSearchParams;
-  const { jobCategoryCode, countryCode } = searchParams;
+  const { jobCategoryCode, countryCode, keyword = "" } = searchParams;
 
   let jobs;
   if (jobCategoryCode) {
@@ -168,9 +169,22 @@ export default async function Page({
 
   console.log('Jobs Fetched:', { totalJobs: jobs.length });
 
+  // Apply search filtering by job title if keyword is provided (case-insensitive)
+  const filteredJobs = keyword
+    ? jobs.filter((job: { title: string }) =>
+        job.title.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : jobs;
+
   return (
     <div className="p-4">
-      <DropdownFilter jobs={jobs} />
+      {/* Render SearchForm (client component) at the top */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={keyword} />
+      </div>
+
+      {/* Render DropdownFilter with the (filtered) jobs */}
+      <DropdownFilter jobs={filteredJobs} />
     </div>
   );
 }

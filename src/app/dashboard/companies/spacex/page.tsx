@@ -1,4 +1,6 @@
+import React from 'react';
 import DropdownFilter from "./DropdownFilter";
+import SearchForm from '../../components/SearchForm';
 
 // Cache expiry time (2 minutes in milliseconds)
 const CACHE_EXPIRY_TIME = 2 * 60 * 1000;
@@ -6,20 +8,48 @@ const CACHE_EXPIRY_TIME = 2 * 60 * 1000;
 // Simple in-memory cache
 const cache: { data?: any; timestamp?: number } = {};
 
-export default async function Page() {
+// Main page component that fetches jobs based on search parameters (jobCategoryCode, countryCode, keyword)
+export default async function Page({
+  searchParams: rawSearchParams,
+}: {
+  searchParams: Promise<{ jobCategoryCode?: string; countryCode?: string; keyword?: string }>;
+}) {
+  // Await the promise to get the actual search parameters
+  const searchParams = await rawSearchParams;
+  const { jobCategoryCode, countryCode, keyword = "" } = searchParams;
+  
   const currentTime = Date.now();
 
   // Check if cache exists and is not expired
   if (cache.data && currentTime - (cache.timestamp || 0) < CACHE_EXPIRY_TIME) {
     console.log("Fetching data from cache...");
-    return <DropdownFilter {...cache.data} />;
+    // Apply search filtering by title if a keyword is provided
+    const filteredJobs = keyword
+      ? cache.data.jobs.filter((job: { title: string }) =>
+          job.title.toLowerCase().includes(keyword.toLowerCase())
+        )
+      : cache.data.jobs;
+    return (
+      <div className="p-4">
+        {/* Render the SearchForm above the dropdown */}
+        <div className="mb-6">
+          <SearchForm initialKeyword={keyword} />
+        </div>
+        <DropdownFilter {...{ 
+          locations: cache.data.locations.filter((loc: any): loc is string => typeof loc === "string"),
+          disciplines: cache.data.disciplines.filter((disc: any): disc is string => typeof disc === "string"),
+          programs: cache.data.programs.filter((prog: any): prog is string => typeof prog === "string"),
+          jobs: filteredJobs 
+        }} />
+      </div>
+    );
   }
 
   console.log("Fetching fresh data from API...");
 
   // Fetch jobs from API
-  const res1 = await fetch("https://boards-api.greenhouse.io/v1/boards/spacex/jobs"); // Replace with your API endpoint
-  const res2 = await fetch("https://boards-api.greenhouse.io/v1/boards/spacexglobal/jobs"); // Replace with your API endpoint
+  const res1 = await fetch("https://boards-api.greenhouse.io/v1/boards/spacex/jobs");
+  const res2 = await fetch("https://boards-api.greenhouse.io/v1/boards/spacexglobal/jobs");
 
   if (!res1.ok || !res2.ok) {
     throw new Error("Failed to fetch jobs");
@@ -68,12 +98,25 @@ export default async function Page() {
   cache.data = { locations, disciplines, programs, jobs: jobList };
   cache.timestamp = currentTime;
 
+  // Apply search filtering by job title if keyword is provided (case-insensitive)
+  const filteredJobs = keyword
+    ? jobList.filter((job) => job.title.toLowerCase().includes(keyword.toLowerCase()))
+    : jobList;
+
   return (
-    <DropdownFilter
-      locations={locations.filter((loc): loc is string => typeof loc === "string")}
-      disciplines={disciplines.filter((disc): disc is string => typeof disc === "string")}
-      programs={programs.filter((prog): prog is string => typeof prog === "string")}
-      jobs={jobList}
-    />
+    <div className="p-4">
+      {/* Render SearchForm for title filtering */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={keyword} />
+      </div>
+
+      {/* Render DropdownFilter with the (filtered) jobs */}
+      <DropdownFilter
+        locations={locations.filter((loc): loc is string => typeof loc === "string")}
+        disciplines={disciplines.filter((disc): disc is string => typeof disc === "string")}
+        programs={programs.filter((prog): prog is string => typeof prog === "string")}
+        jobs={filteredJobs}
+      />
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import { jobCategory, country } from '../../../../Data/data';
 import DropdownFilter from './DropdownFilter';
 import JobCard from '../../components/JobCard/JobCard';
 import Pagination from './Pagination';
+import SearchForm from '../../components/SearchForm';
 
 interface Job {
   post_id: string;
@@ -126,30 +127,36 @@ async function fetchJobs(filters: Record<string, string | undefined>): Promise<J
 }
 
 export default async function TuringPage({ searchParams: rawSearchParams }: TuringProps) {
-  // Await the promise to resolve the actual search parameters
+  // Await the searchParams promise
   const searchParams = await rawSearchParams;
   const currentPage = parseInt(searchParams.page || '1', 10);
   const normalizedParams = normalizeParams(searchParams);
 
   const selectedCompany = 'Turing';
 
-  let allJobs: Job[] = [];
-  let paginatedJobs: Job[] = [];
-  let error: string | null = null;
-
   // Transform filters to use in the API call
   const filters = transformFilters(normalizedParams);
 
+  // Fetch jobs from the API based on filters (does not include keyword filtering)
+  let allJobs: Job[] = [];
   try {
     allJobs = await fetchJobs(filters);
-
-    // Paginate jobs
-    const startIdx = (currentPage - 1) * JOBS_PER_PAGE;
-    const endIdx = startIdx + JOBS_PER_PAGE;
-    paginatedJobs = allJobs.slice(startIdx, endIdx);
   } catch (err) {
-    error = (err as Error).message;
+    console.error('Error fetching jobs:', err);
   }
+
+  // Apply search form filtering on job title using the 'keyword' query parameter
+  const keyword = searchParams.keyword || "";
+  const filteredJobs = keyword
+    ? allJobs.filter((job) =>
+        job.post_title.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : allJobs;
+
+  // Paginate jobs
+  const startIdx = (currentPage - 1) * JOBS_PER_PAGE;
+  const endIdx = startIdx + JOBS_PER_PAGE;
+  const paginatedJobs = filteredJobs.slice(startIdx, endIdx);
 
   // Sanitize search parameters (removing unwanted keys)
   const sanitizedSearchParams = Object.entries(searchParams)
@@ -161,6 +168,12 @@ export default async function TuringPage({ searchParams: rawSearchParams }: Turi
 
   return (
     <div className="p-4">
+      {/* Search Form for Title Filtering */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={keyword} />
+      </div>
+
+      {/* Dropdown Filters */}
       <div>
         <DropdownFilter
           jobCategory={jobCategory}
@@ -170,11 +183,8 @@ export default async function TuringPage({ searchParams: rawSearchParams }: Turi
         />
       </div>
 
-      {error ? (
-        <div className="text-red-500">Error: {error}</div>
-      ) : paginatedJobs.length === 0 ? (
-        <div className="text-center text-white mt-4">No jobs available for the selected criteria.</div>
-      ) : (
+      {/* Job Listings */}
+      {paginatedJobs.length > 0 ? (
         <ul className="space-y-4">
           {paginatedJobs.map((job) => (
             <li key={job.post_id}>
@@ -190,19 +200,24 @@ export default async function TuringPage({ searchParams: rawSearchParams }: Turi
                   responsibilities: '',
                 }}
                 onToggleDetails={() => {}}
-                isSelected={false}
+                isSelected={searchParams.jobId === job.post_id}
                 baseUrl="https://careers.turing.com/job/"
               />
             </li>
           ))}
         </ul>
+      ) : (
+        <div className="text-center text-white mt-4">
+          No jobs available for the selected criteria.
+        </div>
       )}
 
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(allJobs.length / JOBS_PER_PAGE)}
+        totalPages={Math.ceil(filteredJobs.length / JOBS_PER_PAGE)}
         updatedSearchParams={sanitizedSearchParams}
-        disableNext={paginatedJobs.length < 10}
+        disableNext={paginatedJobs.length < JOBS_PER_PAGE}
       />
     </div>
   );

@@ -1,6 +1,7 @@
 'use server';
 
 import { PalantirServer } from './PalantirServer';
+import SearchForm from '../../components/SearchForm';
 
 interface Categories {
   commitment: string;
@@ -24,9 +25,9 @@ interface Urls {
   show: string;
 }
 
-interface Data {
+export interface Data {
   id: string;
-  text: string;
+  text: string; // Job title
   categories: Categories;
   tags: string[];
   content: Content;
@@ -44,12 +45,12 @@ const jobsCache: {
 };
 
 // Cache expiration time (in milliseconds)
-const CACHE_EXPIRATION_TIME = 60 * 1000 * 2; // 2 minute
+const CACHE_EXPIRATION_TIME = 60 * 1000 * 2; // 2 minutes
 
 const fetchJobsData = async (initialJobs: Data[]) => {
   const now = Date.now();
 
-  // Check if cached data exists and is still valid
+  // Return cached data if still valid
   if (jobsCache.data && jobsCache.lastFetched && now - jobsCache.lastFetched < CACHE_EXPIRATION_TIME) {
     console.log('Returning cached jobs data');
     return jobsCache.data;
@@ -58,7 +59,7 @@ const fetchJobsData = async (initialJobs: Data[]) => {
   console.log('Fetching fresh jobs data');
 
   let allJobs: Data[] = [...initialJobs]; // Start with initial jobs
-  let fetchUrl = `https://www.palantir.com/api/lever/v1/postings?state=published`; // Start from offset 0
+  let fetchUrl = `https://www.palantir.com/api/lever/v1/postings?state=published`;
 
   while (fetchUrl) {
     const res = await fetch(fetchUrl);
@@ -85,13 +86,36 @@ const fetchJobsData = async (initialJobs: Data[]) => {
   return allJobs;
 };
 
-const PalantirPage = async () => {
-  // Fetch job listings data server-side and apply pagination
+// The page component now accepts searchParams so that users can filter by keyword.
+// (In Next.js App Router, searchParams are passed in as a prop.)
+const PalantirPage = async ({
+  searchParams,
+}: {
+  searchParams: Record<string, string | undefined>;
+}) => {
+  // Read the keyword parameter; if not provided, default to an empty string.
+  const keyword = searchParams.keyword || "";
+
+  // Fetch the full list of jobs
   const jobListings = await fetchJobsData([]);
+
+  // If a keyword is provided, filter jobs by checking if the job's title (the "text" field)
+  // includes the keyword (case-insensitive)
+  const filteredJobs = keyword
+    ? jobListings.filter((job) =>
+        job.text.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : jobListings;
 
   return (
     <div className="p-4">
-      <PalantirServer jobs={{ data: jobListings, hasNext: false, next: '' }} />
+      {/* Render the SearchForm component (client component) at the top */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={keyword} />
+      </div>
+
+      {/* Pass filtered jobs to your PalantirServer component */}
+      <PalantirServer jobs={{ data: filteredJobs, hasNext: false, next: '' }} />
     </div>
   );
 };

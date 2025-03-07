@@ -1,6 +1,7 @@
 import DropdownFilter from './DropdownFilter'; // Reusable DropdownFilter component
 import JobCard from '../../components/JobCard/JobCard';
 import Pagination from './Pagination'; // Updated Pagination component that accepts loading/disableNext props
+import SearchForm from '../../components/SearchForm';
 import { jobCategory, country } from '../../../../Data/data'; // Import data for dropdowns
 
 interface JobListing {
@@ -151,7 +152,7 @@ const Atlassian = async ({ searchParams }: AtlassianProps) => {
   }, {});
   const aggregatedJobs = Object.values(jobsMap);
 
-  // Filter jobs based on resolvedSearchParams
+  // Filter jobs based on resolvedSearchParams (including title search via keyword)
   const filteredJobs = aggregatedJobs.filter((job) => {
     const matchesCategory = resolvedSearchParams.jobCategory
       ? job.category === resolvedSearchParams.jobCategory
@@ -161,7 +162,10 @@ const Atlassian = async ({ searchParams }: AtlassianProps) => {
           new RegExp(resolvedSearchParams.country!, 'i').test(loc)
         )
       : true;
-    return matchesCategory && matchesLocation;
+    const matchesKeyword = resolvedSearchParams.keyword
+      ? job.title.toLowerCase().includes(resolvedSearchParams.keyword.toLowerCase())
+      : true;
+    return matchesCategory && matchesLocation && matchesKeyword;
   });
 
   // Pagination logic
@@ -174,6 +178,11 @@ const Atlassian = async ({ searchParams }: AtlassianProps) => {
 
   return (
     <div className="p-4">
+      {/* Search Form for Title Filtering */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={resolvedSearchParams.keyword || ""} />
+      </div>
+
       {/* Dropdown Filters */}
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-6">
         <DropdownFilter

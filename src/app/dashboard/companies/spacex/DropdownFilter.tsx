@@ -76,7 +76,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
   }
 
   return (
-    <div className="flex flex-col mb-6 space-y-4 sm:flex-col sm:space-x-4 sm:space-y-0 w-full pr-4 pl-4">
+    <div className="flex flex-col mb-6 space-y-4 sm:flex-col sm:space-x-4 sm:space-y-0 w-full pr-4">
       <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <Select
           options={locations.map((loc) => ({ value: loc, label: loc }))}

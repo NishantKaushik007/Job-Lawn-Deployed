@@ -1,6 +1,7 @@
 import DropdownFilter from './DropdownFilter';
 import JobCard from '../../components/JobCard/JobCard';
 import Pagination from './Pagination';
+import SearchForm from '../../components/SearchForm';
 
 interface JobDescription {
   websiteDescription: string;
@@ -61,7 +62,7 @@ const saveToLocalStorage = (key: string, data: any) => {
   }
 };
 
-// Fetch jobs function with hybrid caching
+// Fetch jobs function with hybrid caching and added keyword filtering
 const fetchJobs = async (
   filters: Record<string, string | null>,
   page: number
@@ -115,7 +116,7 @@ const fetchJobs = async (
       ...new Set(activeJobs.flatMap((job) => job.jobMetadata.jobSeekerCategories)),
     ];
 
-    // Apply filters
+    // Apply filters, including new keyword filter for title (displayName)
     const filteredJobs = activeJobs.filter((job) => {
       const locationMatch = filters.location
         ? job.jobMetadata.jobLocations.some((location) => location.name === filters.location)
@@ -126,7 +127,10 @@ const fetchJobs = async (
       const jobSeekerCategoryMatch = filters.jobSeekerCategory
         ? job.jobMetadata.jobSeekerCategories?.includes(filters.jobSeekerCategory) ?? false
         : true;
-      return locationMatch && departmentMatch && jobSeekerCategoryMatch;
+      const keywordMatch = filters.keyword
+        ? job.displayName.toLowerCase().includes(filters.keyword.toLowerCase())
+        : true;
+      return locationMatch && departmentMatch && jobSeekerCategoryMatch && keywordMatch;
     });
 
     // Pagination logic
@@ -164,12 +168,13 @@ const DeShaw = async ({
 }) => {
   // Await the promise to resolve searchParams
   const resolvedSearchParams = await searchParams;
-  const { location, department, jobSeekerCategory, page } = resolvedSearchParams;
+  const { location, department, jobSeekerCategory, page, keyword } = resolvedSearchParams;
 
   const filters = {
     location: location || null,
     department: department || null,
     jobSeekerCategory: jobSeekerCategory || null,
+    keyword: keyword || null,
   };
 
   const currentPage = parseInt(page || '1', 10);
@@ -181,6 +186,11 @@ const DeShaw = async ({
 
   return (
     <div className="p-4">
+      {/* Search Form for Title Filtering */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={resolvedSearchParams.keyword || ""} />
+      </div>
+
       {/* Filters */}
       <div className="filters flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <DropdownFilter

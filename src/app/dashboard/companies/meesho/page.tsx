@@ -3,6 +3,7 @@ import DropdownFilter from './DropdownFilter';
 import { jobCategory, industryExp } from '../../../../Data/data';
 import Pagination from './Pagination';
 import JobCard from '../../components/JobCard/JobCard';
+import SearchForm from '../../components/SearchForm';
 
 interface Job {
   text: string;
@@ -16,22 +17,22 @@ interface Job {
   hostedUrl: string;
 }
 
-const CACHE_EXPIRY_TIME = 60 * 1000 * 2; // 2 minutes
+const CACHE_EXPIRY_TIME = 2 * 60 * 1000; // 2 minutes
 
 // In-memory cache for jobs and their last fetch time
 let cachedJobs: Record<string, Job[]> = {};
 let lastFetched: Record<string, number> = {};
 
-// Fetch jobs with caching
+// Fetch jobs with caching (returns the full list)
 async function fetchJobs(
   jobCategoryCodes: string[],
   industryExpCodes: string[],
+  // currentPage is not used for slicing here
   currentPage: number
 ): Promise<Job[]> {
   const cacheKey = JSON.stringify({
     jobCategoryCodes,
     industryExpCodes,
-    currentPage,
   });
 
   if (cachedJobs[cacheKey] && Date.now() - lastFetched[cacheKey] < CACHE_EXPIRY_TIME) {
@@ -39,7 +40,7 @@ async function fetchJobs(
     return cachedJobs[cacheKey];
   }
 
-  const resultsPerPage = 10;
+  const resultsPerPage = 10; // used later for pagination
   const queryParams = [
     jobCategoryCodes.length > 0 && `team=${jobCategoryCodes.join('&team=')}`,
     industryExpCodes.length > 0 && `commitment=${industryExpCodes.join('&commitment=')}`,
@@ -52,7 +53,8 @@ async function fetchJobs(
   const res = await fetch(url);
   const data = await res.json();
 
-  const jobs = data.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
+  // Instead of slicing here, return the complete list of jobs.
+  const jobs: Job[] = data; 
 
   cachedJobs[cacheKey] = jobs;
   lastFetched[cacheKey] = Date.now();
@@ -66,18 +68,33 @@ const Page = async ({
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) => {
-  // Await the searchParams promise (wrap with Promise.resolve in case it isn’t already a Promise)
-  const sp = await Promise.resolve(searchParams);
+  // Await the searchParams promise
+  const sp = await searchParams;
 
+  // Extract filters from query parameters
   const jobCategoryCodes = sp.jobCategory ? sp.jobCategory.split(',') : [];
   const industryExpCodes = sp.industryExp ? sp.industryExp.split(',') : [];
+  const keyword = sp.keyword || "";
   const selectedCompany = 'Meesho';
 
+  // Use sp.page for pagination (default page 1)
   const currentPage = sp.page ? parseInt(sp.page, 10) : 1;
-  // Optionally, you can use sp.jobId for selection later
-  const selectedJobId = sp.jobId;
 
-  const jobs: Job[] = await fetchJobs(jobCategoryCodes, industryExpCodes, currentPage);
+  // Fetch the full list of jobs based on dropdown filters (without slicing)
+  const allJobs: Job[] = await fetchJobs(jobCategoryCodes, industryExpCodes, currentPage);
+
+  // Apply search filter on job title (the 'text' property)
+  const filteredByKeyword = keyword
+    ? allJobs.filter((job) =>
+        job.text.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : allJobs;
+
+  // Now apply pagination on the filtered results
+  const resultsPerPage = 10;
+  const indexOfLastJob = currentPage * resultsPerPage;
+  const indexOfFirstJob = indexOfLastJob - resultsPerPage;
+  const paginatedJobs = filteredByKeyword.slice(indexOfFirstJob, indexOfLastJob);
 
   // Convert search parameters to a serializable object (all values as strings)
   const serializableParams: Record<string, string> = Object.fromEntries(
@@ -88,6 +105,12 @@ const Page = async ({
 
   return (
     <div className="p-4">
+      {/* Search Form for Title Filtering */}
+      <div className="mb-6">
+        <SearchForm initialKeyword={keyword} />
+      </div>
+
+      {/* Dropdown Filters */}
       <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <DropdownFilter
           jobCategory={jobCategory}
@@ -100,9 +123,10 @@ const Page = async ({
         />
       </div>
 
-      {jobs.length > 0 ? (
+      {/* Job Listings */}
+      {paginatedJobs.length > 0 ? (
         <ul>
-          {jobs.map((job: Job) => (
+          {paginatedJobs.map((job: Job) => (
             <li key={job.id}>
               <JobCard
                 job={{
@@ -127,11 +151,12 @@ const Page = async ({
         </div>
       )}
 
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         updatedSearchParams={serializableParams}
         loading={false}
-        disableNext={jobs.length < 10}
+        disableNext={paginatedJobs.length < resultsPerPage}
       />
     </div>
   );
