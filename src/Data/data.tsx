@@ -30,6 +30,7 @@ export const companyList = [
     {value: 'Tripadvisor', icon: '/Companies Logo/tripadvisor.png'},
     {value: 'Turing', icon: '/Companies Logo/turing.png'},
     {value: 'UKG', icon: '/Companies Logo/ukg.png'},
+    {value: 'United Health Care', icon: '/Companies Logo/unitedhealthcare.png'},
 ];
 
 export const jobCategory = [
