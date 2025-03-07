@@ -99,6 +99,8 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/booking")
             } else if (selectedOption.value === "KPMG") {
                 router.push("/dashboard/companies/kpmg")
+            } else if (selectedOption.value === "DP World") {
+                router.push("/dashboard/companies/dpworld")
             }
         } else {
             setSelectedCompany(null);
