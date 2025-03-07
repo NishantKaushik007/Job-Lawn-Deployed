@@ -13,6 +13,7 @@ export interface JobListing {
     updatedDate: string;
   };
   id: string;
+  ref: string;
   portalId: number;
   title: string;
   type: string; // job_type
@@ -58,6 +59,7 @@ const mapJob = (job: any): JobListing => {
       updatedDate: job.open_date || "",
     },
     id: String(job.id),
+    ref: String(job.ref),
     portalId: 2071,
     title: job.title || "",
     type: job.job_type || "",
@@ -265,7 +267,7 @@ export default async function Page({ searchParams }: PageProps) {
               <JobCard
                 job={{
                   title: job.title,
-                  id_icims: job.id,
+                  id_icims: job.ref,
                   job_path: job.portalJobPost.portalUrl,
                   postingDate: job.portalJobPost.updatedDate,
                   normalized_location: job.locations.join(' | '),
