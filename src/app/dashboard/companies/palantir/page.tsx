@@ -1,5 +1,3 @@
-'use server';
-
 import { PalantirServer } from './PalantirServer';
 import SearchForm from '../../components/SearchForm';
 
@@ -86,13 +84,8 @@ const fetchJobsData = async (initialJobs: Data[]) => {
   return allJobs;
 };
 
-// The page component now accepts searchParams so that users can filter by keyword.
-// (In Next.js App Router, searchParams are passed in as a prop.)
-const PalantirPage = async ({
-  searchParams,
-}: {
-  searchParams: Record<string, string | undefined>;
-}) => {
+// Since page components are server components by default, we can let Next.js infer the type for searchParams.
+const PalantirPage = async ({ searchParams }: { searchParams: any }) => {
   // Read the keyword parameter; if not provided, default to an empty string.
   const keyword = searchParams.keyword || "";
 

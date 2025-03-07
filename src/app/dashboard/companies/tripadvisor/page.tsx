@@ -1,5 +1,3 @@
-'use server';
-
 import DropdownFilter from "./DropdownFilter";
 import SearchForm from "../../components/SearchForm";
 
@@ -9,12 +7,13 @@ const CACHE_EXPIRY_TIME = 2 * 60 * 1000;
 // Simple in-memory cache
 const cache: { data?: any; timestamp?: number } = {};
 
-// The component now accepts searchParams as a prop
 export default async function Page({
   searchParams,
 }: {
-  searchParams: Record<string, string | undefined>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }) {
+  // Wait for the search parameters to resolve
+  const resolvedSearchParams = await searchParams;
   const currentTime = Date.now();
 
   if (!cache.data || currentTime - (cache.timestamp || 0) >= CACHE_EXPIRY_TIME) {
@@ -85,8 +84,8 @@ export default async function Page({
     console.log("Fetching data from cache...");
   }
 
-  // Integrate search functionality: filter jobs by title if a keyword is provided.
-  const keyword = searchParams.keyword || "";
+  // Filter jobs by title if a keyword is provided.
+  const keyword = resolvedSearchParams.keyword || "";
   const allJobs = cache.data.jobs;
   const filteredJobs = keyword
     ? allJobs.filter((job: { title: string }) =>
@@ -103,9 +102,15 @@ export default async function Page({
 
       {/* Render DropdownFilter with cached filter data and filtered jobs */}
       <DropdownFilter
-        offices={cache.data.offices.filter((office: any): office is string => typeof office === "string")}
-        departments={cache.data.departments.filter((department: any): department is string => typeof department === "string")}
-        metadataValues={cache.data.metadataValues.filter((metadataValue: any): metadataValue is string => typeof metadataValue === "string")}
+        offices={cache.data.offices.filter(
+          (office: any): office is string => typeof office === "string"
+        )}
+        departments={cache.data.departments.filter(
+          (department: any): department is string => typeof department === "string"
+        )}
+        metadataValues={cache.data.metadataValues.filter(
+          (metadataValue: any): metadataValue is string => typeof metadataValue === "string"
+        )}
         jobs={filteredJobs}
       />
     </div>
