@@ -1,12 +1,23 @@
-//src/app/api/auth/forget-password/verify/route.ts
+// src/app/api/auth/forget-password/verify/route.ts
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import { User } from "@/lib/UserModel";
 import bcrypt from "bcrypt";
+import { passwordResetSchema } from "@/utils/validators";
 
 export async function POST(request: Request) {
   try {
     const { email, otp, newPassword } = await request.json();
+
+    // Validate newPassword using passwordResetSchema
+    const validationResult = passwordResetSchema.safeParse({ password: newPassword });
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { error: validationResult.error.errors[0].message },
+        { status: 400 }
+      );
+    }
+
     await dbConnect();
 
     const user = await User.findOne({ email });

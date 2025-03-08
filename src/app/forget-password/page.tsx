@@ -16,6 +16,10 @@ export default function ForgetPasswordPage() {
   // State to detect if device is mobile (viewport width < 640px)
   const [isMobile, setIsMobile] = useState(false);
 
+  // --- Added for Toggle Password Visibility ---
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => setShowPassword(prev => !prev);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
@@ -75,13 +79,19 @@ export default function ForgetPasswordPage() {
   };
 
   useEffect(() => {
-    if (error && (error.includes("OTP expired") || error.includes("Too many attempts"))) {
+    if (
+      error &&
+      (error.includes("OTP expired") || error.includes("Too many attempts"))
+    ) {
       window.location.reload();
     }
   }, [error]);
 
   // For non-mobile: Handle OTP input change for each separate input box
-  const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleOtpChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     let value = e.target.value;
 
     if (value.length > 1) {
@@ -124,7 +134,10 @@ export default function ForgetPasswordPage() {
   };
 
   // For non-mobile: Arrow key navigation between OTP inputs
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     if (e.key === "ArrowLeft" && index > 0) {
       e.preventDefault();
       document.getElementById(`otp-input-${index - 1}`)?.focus();
@@ -158,7 +171,9 @@ export default function ForgetPasswordPage() {
       <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
       <div className="w-full max-w-sm sm:max-w-md p-8 bg-[#2a2a2a]/50 rounded-2xl backdrop-blur-xl border border-zinc-800 relative z-10 select-none">
-        <h1 className="text-2xl font-semibold text-white text-center mb-8">Forget Password</h1>
+        <h1 className="text-2xl font-semibold text-white text-center mb-8">
+          Forget Password
+        </h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
@@ -195,7 +210,10 @@ export default function ForgetPasswordPage() {
             {isMobile ? (
               // Single input for mobile devices
               <div>
-                <label htmlFor="otp-mobile" className="text-sm text-zinc-400 mb-1 block">
+                <label
+                  htmlFor="otp-mobile"
+                  className="text-sm text-zinc-400 mb-1 block"
+                >
                   Enter OTP
                 </label>
                 <input
@@ -229,19 +247,67 @@ export default function ForgetPasswordPage() {
               </div>
             )}
 
-            <div className="space-y-2 mt-6">
+            <div className="space-y-2 mt-6 relative">
               <label htmlFor="newPassword" className="text-sm text-zinc-400">
                 New Password
               </label>
               <input
                 id="newPassword"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="New password"
                 required
-                className="w-full h-12 px-4 py-2 rounded-md bg-[#2a2a2a]/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-12 px-4 py-2 pr-12 rounded-md bg-[#2a2a2a]/50 border-zinc-700 text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <span
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              >
+                {showPassword ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 h-6 text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 h-6 text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.05 10.05 0 012.524-4.24M4.465 4.465l15.07 15.07"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9.88 9.88A3 3 0 0114.12 14.12"
+                    />
+                  </svg>
+                )}
+              </span>
             </div>
 
             <Button

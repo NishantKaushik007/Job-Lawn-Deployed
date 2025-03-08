@@ -39,3 +39,10 @@ export const loginSchema = z.object({
     "Invalid password. Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, and one special character"
   ),
 });
+
+export const passwordResetSchema = z.object({
+  password: z.string().regex(
+    /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Z])(?=.*[a-z]).{8,20}$/,
+    "Invalid password. Password must be 8-20 characters long and include at least one uppercase letter, one lowercase letter, and one special character"
+  ),
+});
