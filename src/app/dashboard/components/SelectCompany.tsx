@@ -103,6 +103,8 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/dpworld")
             } else if (selectedOption.value === "United Health Care") {
                 router.push("/dashboard/companies/unitedhealthcare")
+            } else if (selectedOption.value === "Nvidia") {
+                router.push("/dashboard/companies/nvidia")
             }
         } else {
             setSelectedCompany(null);
