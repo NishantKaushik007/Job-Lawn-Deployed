@@ -217,7 +217,6 @@ export default function ForgetPasswordPage() {
                   htmlFor="otp-mobile"
                   className="text-sm text-zinc-400 mb-1 block"
                 >
-                  Enter the OTP sent on your email
                 </label>
                 <input
                   id="otp-mobile"
