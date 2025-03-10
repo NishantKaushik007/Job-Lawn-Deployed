@@ -207,6 +207,9 @@ export default function ForgetPasswordPage() {
           </form>
         ) : (
           <form onSubmit={handleVerifyOtp} className="space-y-6">
+            <p className="text-sm text-zinc-400 text-center">
+              Enter the OTP sent on your email.
+            </p>
             {isMobile ? (
               // Single input for mobile devices
               <div>
@@ -214,7 +217,7 @@ export default function ForgetPasswordPage() {
                   htmlFor="otp-mobile"
                   className="text-sm text-zinc-400 mb-1 block"
                 >
-                  Enter OTP
+                  Enter the OTP sent on your email
                 </label>
                 <input
                   id="otp-mobile"
