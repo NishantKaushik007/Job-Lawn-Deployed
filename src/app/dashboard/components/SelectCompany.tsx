@@ -107,6 +107,8 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/nvidia")
             } else if (selectedOption.value === "Adobe") {
                 router.push("/dashboard/companies/adobe")
+            } else if (selectedOption.value === "Salesforce") {
+                router.push("/dashboard/companies/salesforce")
             }
         } else {
             setSelectedCompany(null);
