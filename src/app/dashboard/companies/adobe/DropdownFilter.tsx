@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 interface DropdownProps {
-  workSite: { company: string; value: string; code: string }[];
   location: { company: string; value: string; code: string }[];
   jobCategory: { company: string; value: string; code: string }[];
   jobType: { company: string; value: string; code: string }[];
@@ -15,7 +14,6 @@ interface DropdownProps {
 }
 
 const DropdownFilter: React.FC<DropdownProps> = ({
-  workSite,
   location,
   jobCategory,
   jobType,
@@ -64,38 +62,11 @@ const DropdownFilter: React.FC<DropdownProps> = ({
   return (
     <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
       <Select
-        value={getSelectedValue('workSite', workSite)}
-        onChange={handleDropdownChange('workSite')}
-        options={transformOptions(workSite)}
-        className="w-full sm:w-9/12"
-        placeholder="Select WorkSite"
-        isClearable
-        isSearchable
-      />
-      <Select
-        value={getSelectedValue('location', location)}
-        onChange={handleDropdownChange('location')}
-        options={transformOptions(location)}
-        className="w-full sm:w-9/12"
-        placeholder="Select Location"
-        isClearable
-        isSearchable
-      />
-      <Select
         value={getSelectedValue('jobCategory', jobCategory)}
         onChange={handleDropdownChange('jobCategory')}
         options={transformOptions(jobCategory)}
         className="w-full sm:w-9/12"
         placeholder="Select Job Category"
-        isClearable
-        isSearchable
-      />
-      <Select
-        value={getSelectedValue('jobType', jobType)}
-        onChange={handleDropdownChange('jobType')}
-        options={transformOptions(jobType)}
-        className="w-full sm:w-9/12"
-        placeholder="Select Job Type"
         isClearable
         isSearchable
       />
@@ -109,11 +80,29 @@ const DropdownFilter: React.FC<DropdownProps> = ({
         isSearchable
       />
       <Select
+        value={getSelectedValue('location', location)}
+        onChange={handleDropdownChange('location')}
+        options={transformOptions(location)}
+        className="w-full sm:w-9/12"
+        placeholder="Select Location"
+        isClearable
+        isSearchable
+      />
+      <Select
+        value={getSelectedValue('jobType', jobType)}
+        onChange={handleDropdownChange('jobType')}
+        options={transformOptions(jobType)}
+        className="w-full sm:w-9/12"
+        placeholder="Select Job Type"
+        isClearable
+        isSearchable
+      />
+      <Select
         value={getSelectedValue('category', category)}
         onChange={handleDropdownChange('category')}
         options={transformOptions(category)}
         className="w-full sm:w-9/12"
-        placeholder="Select Worker SubType"
+        placeholder="Select Job Type"
         isClearable
         isSearchable
       />

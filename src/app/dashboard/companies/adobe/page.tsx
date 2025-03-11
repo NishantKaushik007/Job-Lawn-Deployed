@@ -6,7 +6,7 @@ import SearchForm from '../../components/SearchForm';
 import * as cheerio from 'cheerio';
 
 // Import all required arrays from your data file.
-import { workSite, country, location, jobType, jobCategory, category } from '../../../../Data/data';
+import { country, location, jobType, jobCategory, category } from '../../../../Data/data';
 
 // Updated Job interface now includes normalized_location.
 interface Job {
@@ -21,7 +21,6 @@ interface Job {
 }
 
 interface Facets {
-  workSite?: string[];
   location?: string[];
   jobCategory?: string[];
   jobType?: string[];
@@ -34,7 +33,7 @@ const RESULTS_PER_PAGE = 10;
 let cachedJobs: Record<string, Job[]> = {};
 let lastFetched: Record<string, number> = {};
 
-// Fetch NVIDIA jobs from Workday using a CSRF token and facet selections.
+// Fetch Adobe jobs from Workday using a CSRF token and facet selections.
 async function fetchJobs(
   keyword: string,
   currentPage: number,
@@ -49,7 +48,7 @@ async function fetchJobs(
   }
 
   // Step 1: Extract token.
-  const tokenURL = "https://nvidia.wd5.myworkdayjobs.com/NVIDIAExternalCareerSite";
+  const tokenURL = "https://adobe.wd5.myworkdayjobs.com/en-US/external_experienced";
   const tokenRes = await fetch(tokenURL);
   const tokenHTML = await tokenRes.text();
   const $ = cheerio.load(tokenHTML);
@@ -71,9 +70,6 @@ async function fetchJobs(
 
   // Step 2: Build the appliedFacets payload.
   const appliedFacets: Record<string, string[]> = {};
-  if (facets.workSite && facets.workSite.length > 0) {
-    appliedFacets.locationHierarchy2 = facets.workSite;
-  }
   if (facets.country && facets.country.length > 0) {
     appliedFacets.locationCountry = facets.country;
   }
@@ -158,7 +154,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<Record<string, str
   const currentPage = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page, 10) : 1;
 
   // Extract facet values from URL and convert them into arrays.
-  const selectedWorkSite = resolvedSearchParams.workSite ? resolvedSearchParams.workSite.split(',') : undefined;
   const selectedLocation = resolvedSearchParams.location ? resolvedSearchParams.location.split(',') : undefined;
   const selectedJobCategory = resolvedSearchParams.jobCategory ? resolvedSearchParams.jobCategory.split(',') : undefined;
   const selectedJobType = resolvedSearchParams.jobType ? resolvedSearchParams.jobType.split(',') : undefined;
@@ -167,7 +162,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<Record<string, str
 
   // Build facets object.
   const facets: Facets = {
-    workSite: selectedWorkSite,
     location: selectedLocation,
     jobCategory: selectedJobCategory,
     jobType: selectedJobType,
@@ -183,7 +177,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<Record<string, str
   const currentParams: Record<string, string[] | undefined> = {
     keyword: keyword ? [keyword] : undefined,
     page: resolvedSearchParams.page ? [resolvedSearchParams.page] : undefined,
-    workSite: selectedWorkSite,
     location: selectedLocation,
     jobCategory: selectedJobCategory,
     jobType: selectedJobType,
@@ -208,7 +201,6 @@ const Page = async ({ searchParams }: { searchParams: Promise<Record<string, str
 
       <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <DropdownFilter
-          workSite={workSite}
           location={location}
           jobCategory={jobCategory}
           jobType={jobType}
