@@ -1,6 +1,6 @@
 import React from 'react';
-import DropdownFilter from './DropdownFilter';
-import Pagination from './Pagination';
+import DropdownFilter from '../adobe/DropdownFilter';
+import Pagination from '../adobe/Pagination';
 import JobCard from '../../components/JobCard/JobCard';
 import SearchForm from '../../components/SearchForm';
 import * as cheerio from 'cheerio';
