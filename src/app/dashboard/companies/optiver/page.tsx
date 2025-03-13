@@ -88,9 +88,6 @@ export default async function Page({
 
       {/* Render DropdownFilter with cached filter data and filtered jobs */}
       <DropdownFilter
-        offices={cache.data.offices.filter(
-          (office: any): office is string => typeof office === "string"
-        )}
         departments={cache.data.departments.filter(
           (department: any): department is string => typeof department === "string"
         )}
