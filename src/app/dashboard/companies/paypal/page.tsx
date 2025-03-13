@@ -1,7 +1,7 @@
 import { jobCategory, jobType, location, skills } from '../../../../Data/data';
-import DropdownFilter from './DropdownFilter';
+import DropdownFilter from '../millennium/DropdownFilter';
 import JobCard from '../../components/JobCard/JobCard';
-import Pagination from './Pagination';
+import Pagination from '../millennium/Pagination';
 import SearchForm from '../../components/SearchForm';
 
 interface Job {
