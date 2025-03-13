@@ -1,4 +1,4 @@
-import DropdownFilter from "./DropdownFilter";
+import DropdownFilter from "../alphagrep/DropdownFilter";
 import SearchForm from "../../components/SearchForm";
 
 // Cache expiry time (2 minutes in milliseconds)

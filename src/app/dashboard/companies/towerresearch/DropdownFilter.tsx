@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import Pagination from "./Pagination";
+import Pagination from "../alphagrep/Pagination";
 import JobCard from "../../components/JobCard/JobCard";
 
 interface DropdownFilterProps {
