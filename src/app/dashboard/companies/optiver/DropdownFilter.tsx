@@ -6,7 +6,7 @@ import Pagination from "./Pagination";
 import JobCard from "../../components/JobCard/JobCard";
 
 interface DropdownFilterProps {
-  offices: string[];
+  // Removed the separate offices prop since we derive locations from job.location.name.
   departments: string[];
   jobs: {
     internal_job_id: string;
@@ -19,17 +19,27 @@ interface DropdownFilterProps {
     offices: { id: number; name: string; location: string }[];
     departments: { id: number; name: string; child_ids: number[]; parent_id: number | null }[];
     requisition_id: string;
-    data_compliance: { type: string; requires_consent: boolean; requires_processing_consent: boolean; requires_retention_consent: boolean; retention_period: null | any; demographic_data_consent_applies: boolean }[];
+    data_compliance: {
+      type: string;
+      requires_consent: boolean;
+      requires_processing_consent: boolean;
+      requires_retention_consent: boolean;
+      retention_period: null | any;
+      demographic_data_consent_applies: boolean;
+    }[];
   }[];
 }
 
-const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, jobs }) => {
-  const [filteredJobs, setFilteredJobs] = useState<DropdownFilterProps["jobs"]>(jobs);
+const DropdownFilter: React.FC<DropdownFilterProps> = ({ departments, jobs }) => {
+  const [filteredJobs, setFilteredJobs] = useState<typeof jobs>(jobs);
   const [selectedOffice, setSelectedOffice] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const jobsPerPage = 10;
   const [isClient, setIsClient] = useState(false);
+
+  // Generate unique office locations from each job's location.name property.
+  const officeLocations = Array.from(new Set(jobs.map((job) => job.location.name)));
 
   useEffect(() => {
     setIsClient(true);
@@ -38,10 +48,11 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
   useEffect(() => {
     const filterJobs = () => {
       const filtered = jobs.filter((job) => {
-        const matchesOffice =
-          !selectedOffice || job.offices.some((office) => office.name === selectedOffice);
+        // Use job.location.name instead of job.offices for filtering.
+        const matchesOffice = !selectedOffice || job.location.name === selectedOffice;
         const matchesDepartment =
-          !selectedDepartment || job.departments.some((department) => department.name === selectedDepartment);
+          !selectedDepartment ||
+          job.departments.some((department) => department.name === selectedDepartment);
         return matchesOffice && matchesDepartment;
       });
 
@@ -64,7 +75,8 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
     <div className="flex flex-col mb-6 space-y-4 sm:flex-col sm:space-x-4 sm:space-y-0 w-full pr-4">
       <div className="flex flex-col mb-6 space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0 w-full">
         <Select
-          options={offices.map((office) => ({ value: office, label: office }))}
+          // Use the derived officeLocations for the location filter.
+          options={officeLocations.map((office) => ({ value: office, label: office }))}
           placeholder="Select Location"
           onChange={(selectedOption) => setSelectedOffice(selectedOption?.value || null)}
           isClearable
@@ -76,9 +88,11 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
           isClearable
         />
       </div>
-      
+
       {filteredJobs.length === 0 ? (
-        <div className='text-center text-white mt-4'>No jobs available for the selected criteria.</div>
+        <div className="text-center text-white mt-4">
+          No jobs available for the selected criteria.
+        </div>
       ) : (
         <>
           <ul>
@@ -90,7 +104,8 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
                     id_icims: job.requisition_id,
                     posted_date: job.updated_at,
                     job_path: `${job.absolute_url}`,
-                    normalized_location: job.offices.map(office => office.name).join(' | ') || "N/A",
+                    // Use job.location.name to display the primary office location.
+                    normalized_location: job.location.name || "N/A",
                     basic_qualifications: "",
                     description: job.content,
                     preferred_qualifications: "",

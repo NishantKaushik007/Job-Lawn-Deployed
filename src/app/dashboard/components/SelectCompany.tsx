@@ -111,6 +111,30 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/salesforce")
             } else if (selectedOption.value === "Tower Research Capital") {
                 router.push("/dashboard/companies/towerresearch")
+            } else if (selectedOption.value === "NK Securities Research") {
+                router.push("/dashboard/companies/nksecurities")
+            } else if (selectedOption.value === "Acadian Asset Management") {
+                router.push("/dashboard/companies/acadian")
+            } else if (selectedOption.value === "AlphaGrep") {
+                router.push("/dashboard/companies/alphagrep")
+            } else if (selectedOption.value === "APT Portfolio") {
+                router.push("/dashboard/companies/apt")
+            } else if (selectedOption.value === "AQR Capital Management") {
+                router.push("/dashboard/companies/aqr")
+            } else if (selectedOption.value === "Graviton Research Capital") {
+                router.push("/dashboard/companies/graviton")
+            } else if (selectedOption.value === "Hudson River Trading") {
+                router.push("/dashboard/companies/hrt")
+            } else if (selectedOption.value === "IMC Financial Markets") {
+                router.push("/dashboard/companies/imc")
+            } else if (selectedOption.value === "Jane Street Capital") {
+                router.push("/dashboard/companies/janestreet")
+            } else if (selectedOption.value === "Millennium Management") {
+                router.push("/dashboard/companies/millennium")
+            } else if (selectedOption.value === "Optiver") {
+                router.push("/dashboard/companies/optiver")
+            } else if (selectedOption.value === "Quadeye") {
+                router.push("/dashboard/companies/quadeye")
             }
         } else {
             setSelectedCompany(null);

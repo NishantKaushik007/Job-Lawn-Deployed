@@ -39,7 +39,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
     const filterJobs = () => {
       const filtered = jobs.filter((job) => {
         const matchesOffice =
-          !selectedOffice || job.offices.some((office) => office.name === selectedOffice);
+          !selectedOffice || job.offices.some((office) => office.location === selectedOffice);
         const matchesDepartment =
           !selectedDepartment || job.departments.some((department) => department.name === selectedDepartment);
         return matchesOffice && matchesDepartment;
@@ -90,7 +90,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, j
                     id_icims: job.requisition_id,
                     posted_date: job.updated_at,
                     job_path: `${job.absolute_url}`,
-                    normalized_location: job.offices.map(office => office.name).join(' | ') || "N/A",
+                    normalized_location: job.offices.map(office => office.location).join(' | ') || "N/A",
                     basic_qualifications: "",
                     description: job.content,
                     preferred_qualifications: "",
