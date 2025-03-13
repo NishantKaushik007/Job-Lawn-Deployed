@@ -30,6 +30,7 @@ export const companyList = [
     {value: 'SpaceX', icon: '/Companies Logo/SpaceX.png'},
     {value: 'Sumo Logic', icon: '/Companies Logo/Sumo Logic.png'},
     {value: 'Thoughtworks', icon: '/Companies Logo/thoughtworks.png'},
+    {value: 'Tower Research Capital', icon: '/Companies Logo/towerresearch.png'},
     {value: 'Tripadvisor', icon: '/Companies Logo/tripadvisor.png'},
     {value: 'Turing', icon: '/Companies Logo/turing.png'},
     {value: 'UKG', icon: '/Companies Logo/ukg.png'},

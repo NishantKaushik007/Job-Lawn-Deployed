@@ -232,9 +232,9 @@ const Page = async ({ searchParams }: { searchParams: Promise<Record<string, str
                   posted_date: job.postedOn,
                   job_path: job.jobLink,
                   normalized_location: job.normalized_location,
-                  basic_qualifications: 'N/A',
+                  basic_qualifications: '',
                   description: job.description,
-                  responsibilities: 'N/A',
+                  responsibilities: '',
                 }}
                 onToggleDetails={() => {}}
                 isSelected={false}

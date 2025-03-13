@@ -109,6 +109,8 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/adobe")
             } else if (selectedOption.value === "Salesforce") {
                 router.push("/dashboard/companies/salesforce")
+            } else if (selectedOption.value === "Tower Research Capital") {
+                router.push("/dashboard/companies/towerresearch")
             }
         } else {
             setSelectedCompany(null);

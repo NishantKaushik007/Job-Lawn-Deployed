@@ -2,20 +2,18 @@
 
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import Pagination from "../towerresearch/Pagination";
+import Pagination from "./Pagination";
 import JobCard from "../../components/JobCard/JobCard";
 
 interface DropdownFilterProps {
   offices: string[];
   departments: string[];
-  metadataValues: string[];
   jobs: {
     internal_job_id: string;
     id: number;
     title: string;
     absolute_url: string;
     location: { name: string };
-    metadata: { id: number; name: string; value: string | string[] | null }[];
     updated_at: string;
     content: string;
     offices: { id: number; name: string; location: string }[];
@@ -25,11 +23,10 @@ interface DropdownFilterProps {
   }[];
 }
 
-const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, metadataValues, jobs }) => {
+const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, jobs }) => {
   const [filteredJobs, setFilteredJobs] = useState<DropdownFilterProps["jobs"]>(jobs);
   const [selectedOffice, setSelectedOffice] = useState<string | null>(null);
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
-  const [selectedMetadataValue, setSelectedMetadataValue] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const jobsPerPage = 10;
   const [isClient, setIsClient] = useState(false);
@@ -45,16 +42,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, m
           !selectedOffice || job.offices.some((office) => office.name === selectedOffice);
         const matchesDepartment =
           !selectedDepartment || job.departments.some((department) => department.name === selectedDepartment);
-        const matchesMetadata = !selectedMetadataValue || job.metadata.some(meta => {
-          if (Array.isArray(meta.value)) {
-            return meta.value.includes(selectedMetadataValue);
-          } else if (typeof meta.value === 'string') {
-            return meta.value === selectedMetadataValue;
-          }
-          return false;
-        });
-
-        return matchesOffice && matchesDepartment && matchesMetadata;
+        return matchesOffice && matchesDepartment;
       });
 
       setFilteredJobs(filtered);
@@ -62,7 +50,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, m
     };
 
     filterJobs();
-  }, [selectedOffice, selectedDepartment, selectedMetadataValue, jobs]);
+  }, [selectedOffice, selectedDepartment, jobs]);
 
   const indexOfLastJob = currentPage * jobsPerPage;
   const indexOfFirstJob = indexOfLastJob - jobsPerPage;
@@ -85,12 +73,6 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({ offices, departments, m
           options={departments.map((department) => ({ value: department, label: department }))}
           placeholder="Select Department"
           onChange={(selectedOption) => setSelectedDepartment(selectedOption?.value || null)}
-          isClearable
-        />
-        <Select
-          options={metadataValues.map((metadataValue) => ({ value: metadataValue, label: metadataValue }))}
-          placeholder="Select Job Type"
-          onChange={(selectedOption) => setSelectedMetadataValue(selectedOption?.value || null)}
           isClearable
         />
       </div>

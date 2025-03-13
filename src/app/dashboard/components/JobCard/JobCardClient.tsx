@@ -3,6 +3,13 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Job } from './types';
 
+// Helper function to decode HTML entities
+const decodeHtml = (html: string): string => {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
+};
+
 interface JobCardClientProps {
   job: Job;
   isSelected: boolean;
@@ -93,6 +100,13 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
     );
   };
 
+  // Determine if each section should be displayed
+  const showDescription = job.description && job.description.trim() !== '';
+  const basicQualificationsContent = job.basic_qualifications || job.qualifications || '';
+  const showBasicQualifications = basicQualificationsContent.trim() !== '';
+  const showPreferredQualifications =
+    job.preferred_qualifications && job.preferred_qualifications.trim() !== '';
+
   return (
     <div
       className={`select-none rounded-lg shadow-md p-4 mb-4 border-4 border-transparent ${
@@ -153,18 +167,40 @@ const JobCardClient: React.FC<JobCardClientProps> = ({ job, isSelected, baseUrl 
       </div>
       {isDetailsVisible && (
         <div className="mt-2 border-t bg-gradient-to-r from-slate-300/60 to-slate-500/60 pt-2 backdrop-blur-lg rounded-lg p-4">
-          <h4 className="font-semibold">Description:</h4>
-          <div dangerouslySetInnerHTML={{ __html: job.description || '' }} />
-          <h4 className="font-semibold">Basic Qualifications:</h4>
-          <div
-            dangerouslySetInnerHTML={{ __html: job.basic_qualifications || job.qualifications || '' }}
-          />
-          <h4 className="font-semibold">Preferred Qualifications:</h4>
-          <div dangerouslySetInnerHTML={{ __html: job.preferred_qualifications || '' }} />
-          {job.responsibilities && (
+          {showDescription && (
+            <>
+              <h4 className="font-semibold">Description:</h4>
+              <div dangerouslySetInnerHTML={{ __html: decodeHtml(job.description || '') }} />
+            </>
+          )}
+          {showBasicQualifications && (
+            <>
+              <h4 className="font-semibold">Basic Qualifications:</h4>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: decodeHtml(basicQualificationsContent || '')
+                }}
+              />
+            </>
+          )}
+          {showPreferredQualifications && (
+            <>
+              <h4 className="font-semibold">Preferred Qualifications:</h4>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: decodeHtml(job.preferred_qualifications || '')
+                }}
+              />
+            </>
+          )}
+          {job.responsibilities && job.responsibilities.trim() !== '' && (
             <>
               <h4 className="font-semibold">Responsibilities:</h4>
-              <div dangerouslySetInnerHTML={{ __html: job.responsibilities }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: decodeHtml(job.responsibilities || '')
+                }}
+              />
             </>
           )}
         </div>
