@@ -1,5 +1,5 @@
 import JobCard from '../../components/JobCard/JobCard';
-import Pagination from './Pagination';
+import Pagination from '../dpworld/Pagination';
 import DropdownFilter from './DropdownFilter';
 import { jobCategory, country, postingDate } from '../../../../Data/data';
 import SearchForm from '../../components/SearchForm';
