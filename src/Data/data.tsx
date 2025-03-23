@@ -36,6 +36,7 @@ export const companyList = [
     {value: 'PayPal', icon: '/Companies Logo/PayPal.png'},
     {value: 'Quadeye', icon: '/Companies Logo/quadeye.png'},
     {value: 'Qualcomm', icon: '/Companies Logo/Qualcomm.png'},
+    {value: 'Razorpay', icon: '/Companies Logo/Razorpay.png'},
     {value: 'Rippling', icon: '/Companies Logo/Rippling.png'},
     {value: 'Salesforce', icon: '/Companies Logo/salesforce.png'},
     {value: 'Siemens', icon: '/Companies Logo/siemens.png'},

@@ -135,6 +135,8 @@ const SelectedCompany = () => {
                 router.push("/dashboard/companies/optiver")
             } else if (selectedOption.value === "Quadeye") {
                 router.push("/dashboard/companies/quadeye")
+            } else if (selectedOption.value === "Razorpay") {
+                router.push("/dashboard/companies/razorpay")
             }
         } else {
             setSelectedCompany(null);
